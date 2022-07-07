@@ -7,7 +7,7 @@ export class EventController {
   constructor(private readonly eventService: EventService) {}
 
   @Post('/:eventId/bookings')
-  create(
+  async create(
     @Param('eventId') eventId: number,
     @Body() createEventDto: CreateEventDto,
   ) {

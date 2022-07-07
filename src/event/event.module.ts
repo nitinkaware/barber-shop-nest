@@ -8,6 +8,8 @@ import { EventBreak } from './entities/event-break.entity';
 import { Holiday } from './entities/holiday.entity';
 import { ShopTime } from './entities/shop-time.entity';
 import { Timeslot } from './entities/timeslot.entity';
+import { TimeslotService } from './timeslot.service';
+import { BookingService } from './booking.service';
 
 @Module({
   imports: [
@@ -21,6 +23,6 @@ import { Timeslot } from './entities/timeslot.entity';
     ]),
   ],
   controllers: [EventController],
-  providers: [EventService],
+  providers: [EventService, TimeslotService, BookingService],
 })
 export class EventModule {}
