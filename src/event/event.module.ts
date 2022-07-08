@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { EventService } from './event.service';
-import { EventController } from './event.controller';
+import { EventBookingController } from './event-booking.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Booking } from './entities/booking.entity';
 import { Event } from './entities/event.entity';
@@ -22,7 +22,7 @@ import { BookingService } from './booking.service';
       Timeslot,
     ]),
   ],
-  controllers: [EventController],
+  controllers: [EventBookingController],
   providers: [EventService, TimeslotService, BookingService],
 })
 export class EventModule {}
