@@ -22,6 +22,7 @@ export class EventService {
       relations: ['eventBreaks', 'timeslots'],
     });
   }
+
   async createBooking(id: number, createEventDto: CreateEventDto) {
     const event = await this.firstOrFail(id);
 
