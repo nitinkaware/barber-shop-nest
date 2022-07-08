@@ -1,6 +1,6 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { EventModule } from './event/event.module';
+import { EventModule } from './event.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(EventModule);

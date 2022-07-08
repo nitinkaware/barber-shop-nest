@@ -1,6 +1,4 @@
-import moment from 'moment';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { CreateEventDto } from '../dto/create-event.dto';
 import { EventBreak } from './event-break.entity';
 import { Timeslot } from './timeslot.entity';
 
