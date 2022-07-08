@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
-import { EventService } from './event.service';
-import { HolidayService } from './holiday.service';
-import { ShopTimeService } from './shoptime.service';
+import { EventService } from '../services/event.service';
+import { HolidayService } from '../services/holiday.service';
+import { ShopTimeService } from '../services/shoptime.service';
 
 @Controller('bookings')
 export class EventController {

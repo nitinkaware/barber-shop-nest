@@ -1,12 +1,12 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Timeslot } from './entities/timeslot.entity';
+import { Timeslot } from '../entities/timeslot.entity';
 import * as moment from 'moment';
-import { Event } from './entities/event.entity';
-import TimeslotGenerator from './utils/timeslot-generator';
-import { ShopTime } from './entities/shop-time.entity';
-import { Holiday } from './entities/holiday.entity';
+import { Event } from '../entities/event.entity';
+import TimeslotGenerator from '../utils/timeslot-generator';
+import { ShopTime } from '../entities/shop-time.entity';
+import { Holiday } from '../entities/holiday.entity';
 
 @Injectable()
 export class TimeslotService {

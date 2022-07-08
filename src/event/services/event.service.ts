@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BookingService } from './booking.service';
-import { CreateEventDto } from './dto/create-event.dto';
-import { Event } from './entities/event.entity';
+import { CreateEventDto } from '../dto/create-event.dto';
+import { Event } from '../entities/event.entity';
 import { TimeslotService } from './timeslot.service';
 
 @Injectable()
