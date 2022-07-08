@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { Event } from './entities/event.entity';
 import TimeslotGenerator from './utils/timeslot-generator';
 import { ShopTime } from './entities/shop-time.entity';
+import { Holiday } from './entities/holiday.entity';
 
 @Injectable()
 export class TimeslotService {
@@ -15,6 +16,9 @@ export class TimeslotService {
 
     @InjectRepository(ShopTime)
     private readonly shopTimeRepository: Repository<ShopTime>,
+
+    @InjectRepository(Holiday)
+    private readonly holidayRepository: Repository<Holiday>,
   ) {}
 
   async createOrUpdateTimeslot(bookingTime: string, event: Event) {
@@ -51,6 +55,7 @@ export class TimeslotService {
       event,
       moment(bookingTime),
       this.shopTimeRepository,
+      this.holidayRepository,
     ).generateTimeslots();
 
     const isValidTimeslotFound = availableTimeslots.find((timeslot) => {

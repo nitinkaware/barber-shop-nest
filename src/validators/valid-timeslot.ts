@@ -1,9 +1,8 @@
 import {
-  registerDecorator,
-  ValidationOptions,
   ValidationArguments,
+  ValidationOptions,
+  registerDecorator,
 } from 'class-validator';
-import TimeslotGenerator from 'src/event/utils/timeslot-generator';
 
 export function ShouldBeValidTimeslot(
   property: string,

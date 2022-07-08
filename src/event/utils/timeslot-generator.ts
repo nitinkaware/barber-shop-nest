@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import * as moment from 'moment';
 import { Repository } from 'typeorm';
-import { Event } from '../entities/event.entity';
 import { ShopTime } from '../entities/shop-time.entity';
+import { Event } from '../entities/event.entity';
+import { Holiday } from '../entities/holiday.entity';
 
 @Injectable()
 export default class TimeslotGenerator {
@@ -10,40 +11,33 @@ export default class TimeslotGenerator {
     private readonly event: Event,
     private readonly staratsAt: moment.Moment,
     private readonly shopTimeRepository: Repository<ShopTime>,
+    private readonly holidayRepository: Repository<Holiday>,
   ) {}
 
   public async generateTimeslots() {
     const dateTimeFormat = 'YYYY-MM-DD HH:mm:ss';
 
-    const date = this.staratsAt.format('YYYY-MM-DD');
+    const bookingDate = this.staratsAt.format('YYYY-MM-DD');
 
     const shopTime = await this.shopTimeRepository.findOneBy({
       day: this.staratsAt.format('dddd'),
     });
 
-    const eventBreaks = this.event.eventBreaks.map((eventBreak) => {
-      const startsAt = moment(
-        `${date} ${eventBreak.startsAt}:00`,
-        dateTimeFormat,
-      );
+    const eventBreaks = this.getEventBreaks(bookingDate, dateTimeFormat);
 
-      const endsAt = moment(`${date} ${eventBreak.endsAt}:00`, dateTimeFormat);
-
-      return {
-        title: eventBreak.title,
-        startsAt,
-        endsAt,
-      };
-    });
-
-    let shopOpensAt = moment(`${date} ${shopTime.opensAt}:00`, dateTimeFormat);
+    let shopOpensAt = moment(
+      `${bookingDate} ${shopTime.opensAt}:00`,
+      dateTimeFormat,
+    );
 
     const shopClosesAt = moment(
-      `${date} ${shopTime.closesAt}:00`,
+      `${bookingDate} ${shopTime.closesAt}:00`,
       dateTimeFormat,
     );
 
     const timeslots = [];
+
+    await this.abortIfBookingIsOnHoliday(bookingDate);
 
     while (shopOpensAt.isBefore(shopClosesAt)) {
       const breakTime = eventBreaks.find((eventBreak) => {
@@ -69,5 +63,42 @@ export default class TimeslotGenerator {
     }
 
     return timeslots;
+  }
+
+  private getEventBreaks(bookingDate: string, dateTimeFormat: string) {
+    return this.event.eventBreaks.map((eventBreak) => {
+      const startsAt = moment(
+        `${bookingDate} ${eventBreak.startsAt}:00`,
+        dateTimeFormat,
+      );
+
+      const endsAt = moment(
+        `${bookingDate} ${eventBreak.endsAt}:00`,
+        dateTimeFormat,
+      );
+
+      return {
+        title: eventBreak.title,
+        startsAt,
+        endsAt,
+      };
+    });
+  }
+
+  async abortIfBookingIsOnHoliday(bookingDate: string) {
+    const holidays = (await this.holidayRepository.find()).map((holiday) => {
+      return {
+        title: holiday.title,
+        date: moment(holiday.date, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+      };
+    });
+
+    const isHoliday = holidays.find((holiday) => {
+      return bookingDate === holiday.date;
+    });
+
+    if (isHoliday) {
+      throw new UnprocessableEntityException('Booking on holiday');
+    }
   }
 }
