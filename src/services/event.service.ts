@@ -17,7 +17,7 @@ export class EventService {
     private readonly bookingService: BookingService,
   ) {}
 
-  async findAllEventsWithBookingsAndBreaks() {
+  async findAllEventsWithTimeslotsAndBreaks() {
     return await this.eventRepository.find({
       relations: ['eventBreaks', 'timeslots'],
     });

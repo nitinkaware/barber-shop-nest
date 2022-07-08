@@ -14,7 +14,7 @@ export class EventController {
   @Get('/')
   async findAll() {
     return {
-      events: await this.eventService.findAllEventsWithBookingsAndBreaks(),
+      events: await this.eventService.findAllEventsWithTimeslotsAndBreaks(),
       shopTimes: await this.shopTimesService.findAll(),
       holidays: await this.holiDayService.findAll(),
     };
