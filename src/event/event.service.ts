@@ -17,6 +17,11 @@ export class EventService {
     private readonly bookingService: BookingService,
   ) {}
 
+  async findAllEventsWithBookingsAndBreaks() {
+    return await this.eventRepository.find({
+      relations: ['eventBreaks', 'timeslots'],
+    });
+  }
   async createBooking(id: number, createEventDto: CreateEventDto) {
     const event = await this.firstOrFail(id);
 

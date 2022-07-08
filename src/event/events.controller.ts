@@ -7,6 +7,8 @@ export class EventController {
 
   @Get('/')
   async findAll() {
-    //return this.eventService.createBooking(eventId, createEventDto);
+    return {
+      events: await this.eventService.findAllEventsWithBookingsAndBreaks(),
+    };
   }
 }
