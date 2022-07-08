@@ -11,6 +11,8 @@ import { Timeslot } from './entities/timeslot.entity';
 import { TimeslotService } from './timeslot.service';
 import { BookingService } from './booking.service';
 import { EventController } from './events.controller';
+import { ShopTimeService } from './shoptime.service';
+import { HolidayService } from './holiday.service';
 
 @Module({
   imports: [
@@ -24,6 +26,12 @@ import { EventController } from './events.controller';
     ]),
   ],
   controllers: [EventBookingController, EventController],
-  providers: [EventService, TimeslotService, BookingService],
+  providers: [
+    EventService,
+    TimeslotService,
+    BookingService,
+    ShopTimeService,
+    HolidayService,
+  ],
 })
 export class EventModule {}
